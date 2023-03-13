@@ -40,7 +40,7 @@ const NavBarDiv = styled.div`
 export default function Navbar() {
     return (
         <NavBarDiv>
-            <h1>Penny Candy Store</h1>
+            <h1>Movie Reviews</h1>
         </NavBarDiv>
     )
   }
