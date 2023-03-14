@@ -1,7 +1,12 @@
-import Search from '../../components/Search';
+import Search from '@/components/Search';
+import Navbar from "@/components/Navbar";
 
 export default function Home() {
     return (
-        <Search />
+        <>
+            <Navbar />
+            <Search />
+
+        </>
     )
 }

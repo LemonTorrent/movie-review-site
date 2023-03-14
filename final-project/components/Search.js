@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import Spinner from '../components/Spinner'
 import ErrorContainer from '../components/ErrorContainer'
 import useMoviesSearch from '../hooks/useMoviesSearch'
-// import WeatherCard from '../components/WeatherCard'
+import MovieCard from './MovieCard'
 // import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 
@@ -40,17 +40,30 @@ const SearchResults = styled.div`
 
 function Search(props, { query }) {
     const router = useRouter();
-    const [ searchParams, setSearchParams ] = useState(useRouter.basePath)
-    console.log("Path: ", router)
+    const [ searchParams, setSearchParams ] = useState(router.query.query)
+    console.log("Path: ", router.query.query)
+    console.log("Search parameters: ", searchParams)
 
     // const [ inputQuery, setInputQuery ] = useState(useRouter.get("q") || "")
-    const [ inputQuery, setInputQuery ] = useState(useRouter.basePath || "")
+    // const [ inputQuery, setInputQuery ] = useState(router.query.query || "")
+    const [ inputQuery, setInputQuery ] = useState("")
+
+    console.log("Input query: ", inputQuery)
 
     // const [ inputQuery, setInputQuery ] = useState(searchParams.get("q") || "")
 
 
     // const [ repos, loading, error ] = useReposSearch(useRouter.basePath)
-    const [ repos, loading, error ] = useMoviesSearch(searchParams)
+    const [ movies, loading, error ] = useMoviesSearch(searchParams)
+    console.log("Movies:", movies)
+
+    useEffect(()=>{
+        if (!inputQuery) {
+            setSearchParams(router.query.query)
+            setInputQuery(router.query.query)
+        }
+
+    })
     
     return (
         
@@ -62,11 +75,8 @@ function Search(props, { query }) {
                 setSearchParams(inputQuery)
                 router.push(
                     // {
-                    //   pathname: `searchParams`,
-                    //   query: {
-                    //     inputQuery
-                    //   }
-                    // },
+                    //     query: { inputQuery },
+                    // }
                     `/search/${inputQuery}`,
                     undefined,
                     {shallow: true}
@@ -76,12 +86,12 @@ function Search(props, { query }) {
                 <input value={inputQuery} onChange={e => {setInputQuery(e.target.value)}} />
                 <button type="submit">Search</button>
             </form>
-            {repos.length>0? <h2>Weather in {searchParams.get("q")}</h2> : null}
+            {movies.length>0? <h2>Found movies:</h2> : null}
             {error && <ErrorContainer>An error occurred...</ErrorContainer>}
             {loading ? <Spinner /> : (
                 <div className="query-obj">
-                    {repos.map(repo => (
-                        <WeatherCard weatherObj={repo} />
+                    {movies.map(movie => (
+                        <MovieCard movieObj={movie} />
                     ))}
                 </div>
             )}

@@ -6,7 +6,7 @@ function useMoviesSearch(query) {
     const [ error, setError ] = useState(false)
 
     useEffect(() => {
-        console.log("Calling use effect");
+        console.log("Calling use effect with query", query);
         let ignore = false
         const controller = new AbortController()
         async function fetchSearchResults() {
@@ -40,7 +40,7 @@ function useMoviesSearch(query) {
             }
 
             if (!ignore) {
-                setMovies(responseBody.list || [])
+                setMovies(responseBody.results || [])
                 setLoading(false)
             }
         }
