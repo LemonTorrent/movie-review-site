@@ -61,13 +61,14 @@ function Search(props, { query }) {
                 console.log("e")
                 setSearchParams(inputQuery)
                 router.push(
-                    {
-                      pathname: `/search`,
-                      query: {
-                        inputQuery
-                      }
-                    },
+                    // {
+                    //   pathname: `searchParams`,
+                    //   query: {
+                    //     inputQuery
+                    //   }
+                    // },
                     `/search/${inputQuery}`,
+                    undefined,
                     {shallow: true}
                 );
                 
