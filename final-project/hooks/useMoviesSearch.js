@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
-function useReposSearch(query) {
-    const [ repos, setRepos ] = useState([])
+function useMoviesSearch(query) {
+    const [ movies, setMovies ] = useState([])
     const [ loading, setLoading ] = useState(false)
     const [ error, setError ] = useState(false)
 
@@ -10,13 +10,12 @@ function useReposSearch(query) {
         let ignore = false
         const controller = new AbortController()
         async function fetchSearchResults() {
+            console.log("Fetching search results")
             setLoading(true)
             let responseBody = {}
             try {
-                console.log("Environmental variable: ", process.env.REACT_APP_WEATHER_API_KEY);
                 const response = await fetch(
-                    // `https://api.github.com/search/repositories?q=${query}&sort=stars`,
-                    `https://pro.openweathermap.org/data/2.5/forecast/climate?q=${query}&appid=${process.env.REACT_APP_WEATHER_API_KEY}&units=imperial`,
+                    `https://api.themoviedb.org/3/search/movie?api_key=${process.env.NEXT_PUBLIC_THEMOVIEDB_API_KEY}&language=en-US&page=1&include_adult=false&query=${query}`,
                     { signal: controller.signal }
                 )
                 console.log("Fetching search results...")
@@ -41,7 +40,7 @@ function useReposSearch(query) {
             }
 
             if (!ignore) {
-                setRepos(responseBody.list || [])
+                setMovies(responseBody.list || [])
                 setLoading(false)
             }
         }
@@ -54,7 +53,7 @@ function useReposSearch(query) {
         }
     }, [ query ])
 
-    return [ repos, loading, error ]
+    return [ movies, loading, error ]
 }
 
-export default useReposSearch
+export default useMoviesSearch

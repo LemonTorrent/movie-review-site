@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Spinner from '../components/Spinner'
 import ErrorContainer from '../components/ErrorContainer'
-import useReposSearch from '../hooks/useReposSearch'
+import useMoviesSearch from '../hooks/useMoviesSearch'
 // import WeatherCard from '../components/WeatherCard'
 // import { css } from '@emotion/react'
 import styled from '@emotion/styled'
@@ -39,36 +39,40 @@ const SearchResults = styled.div`
 
 
 function Search(props, { query }) {
-    const [ searchParams, setSearchParams ] = useState(useRouter())
+    const router = useRouter();
+    const [ searchParams, setSearchParams ] = useState(useRouter.basePath)
+    console.log("Path: ", router)
+
+    // const [ inputQuery, setInputQuery ] = useState(useRouter.get("q") || "")
+    const [ inputQuery, setInputQuery ] = useState(useRouter.basePath || "")
 
     // const [ inputQuery, setInputQuery ] = useState(searchParams.get("q") || "")
-    const [ inputQuery, setInputQuery ] = useState("")
 
-    const [ repos, loading, error ] = useReposSearch("")
-    // const [ repos, loading, error ] = useReposSearch(searchParams.get("q"))
+
+    // const [ repos, loading, error ] = useReposSearch(useRouter.basePath)
+    const [ repos, loading, error ] = useMoviesSearch(searchParams)
     
     return (
         
         <SearchResults id="query-contents">
-            {/* <div className="" style={searchResultStyle}> */}
-                <h2>Select a movie to check the ratings:</h2>
-                <form onSubmit={e => {
-                    e.preventDefault()
-                    setSearchParams({ q: inputQuery })
-                }}>
-                    <input value={inputQuery} onChange={e => setInputQuery(e.target.value)} />
-                    <button type="submit">Search</button>
-                </form>
-                {repos.length>0? <h2>Weather in {searchParams.get("q")}</h2> : null}
-                {error && <ErrorContainer>An error occurred...</ErrorContainer>}
-                {loading ? <Spinner /> : (
-                    <div className="query-obj">
-                        {repos.map(repo => (
-                            <WeatherCard weatherObj={repo} />
-                        ))}
-                    </div>
-                )}
-            {/* </div> */}
+            <h2>Select a movie to check the ratings:</h2>
+            <form onSubmit={e => {
+                e.preventDefault()
+                console.log("e")
+                setSearchParams(inputQuery)
+            }}>
+                <input value={inputQuery} onChange={e => {setInputQuery(e.target.value)}} />
+                <button type="submit">Search</button>
+            </form>
+            {repos.length>0? <h2>Weather in {searchParams.get("q")}</h2> : null}
+            {error && <ErrorContainer>An error occurred...</ErrorContainer>}
+            {loading ? <Spinner /> : (
+                <div className="query-obj">
+                    {repos.map(repo => (
+                        <WeatherCard weatherObj={repo} />
+                    ))}
+                </div>
+            )}
         
         </SearchResults>
         
