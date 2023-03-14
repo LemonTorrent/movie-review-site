@@ -60,6 +60,17 @@ function Search(props, { query }) {
                 e.preventDefault()
                 console.log("e")
                 setSearchParams(inputQuery)
+                router.push(
+                    {
+                      pathname: `/search`,
+                      query: {
+                        inputQuery
+                      }
+                    },
+                    `/search/${inputQuery}`,
+                    {shallow: true}
+                );
+                
             }}>
                 <input value={inputQuery} onChange={e => {setInputQuery(e.target.value)}} />
                 <button type="submit">Search</button>
