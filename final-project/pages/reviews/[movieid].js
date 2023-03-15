@@ -1,11 +1,11 @@
-import Search from '@/components/Search';
+import Reviews from '@/components/Reviews';
 import Navbar from "@/components/Navbar";
 
-export default function SearchResults() {
+export default function Review() {
     return (
         <>
             <Navbar />
-            <Search />
+            <Reviews />
 
         </>
     )
