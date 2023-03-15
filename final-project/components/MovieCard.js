@@ -1,7 +1,7 @@
 import React, { setState, useState, useEffect } from 'react'
-// import dateFormat, { masks } from "dateformat";
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
+import Link from 'next/link'
 
 function MovieCard ({ movieObj }) {
 
@@ -43,7 +43,9 @@ function MovieCard ({ movieObj }) {
                 <li>Overview: {movieObj.overview}</li>
                 
             </ul>
-            <button>Reviews</button>
+            <Link href={"/reviews/"+movieObj.id}>
+                <button>Reviews</button>
+            </Link>
 
         </CardStyle>       
     )
