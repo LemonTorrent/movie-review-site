@@ -1,9 +1,9 @@
 import React, { setState, useState, useEffect } from 'react'
+// import dateFormat, { masks } from "dateformat";
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
-import Link from 'next/link'
 
-function MovieCard ({ movieObj }) {
+function ReviewCard ({ reviewObj }) {
 
     // console.log("Weather card object: ", movieObj)
     // // const [date, setDate] = setState(new Date(weatherObj.dt))
@@ -39,16 +39,13 @@ function MovieCard ({ movieObj }) {
     return(
         <CardStyle id="weather-card">
             <ul>
-                <li>Title: {movieObj.original_title}</li>
-                <li>Overview: {movieObj.overview}</li>
+                <li>Author: {reviewObj.author}</li>
+                <li>Review: {reviewObj.content}</li>
                 
             </ul>
-            <Link href={"/reviews/"+movieObj.id}>
-                <button>Reviews</button>
-            </Link>
 
         </CardStyle>       
     )
 }
 
-export default MovieCard;
+export default ReviewCard;

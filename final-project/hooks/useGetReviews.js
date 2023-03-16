@@ -1,21 +1,24 @@
 import { useEffect, useState } from 'react'
 
-function useMoviesSearch(query) {
+function useGetReviews(id) {
     const [ movies, setMovies ] = useState([])
     const [ loading, setLoading ] = useState(false)
     const [ error, setError ] = useState(false)
 
+    // want name, id, date
+
     useEffect(() => {
-        console.log("UseMoviesSearch Calling use effect with query", query);
+        console.log("UseGetReveiws Calling use effect with id", id);
+        console.log("Loooking at ", `https://api.themoviedb.org/3/movie/${id}/reviews?api_key=${process.env.NEXT_PUBLIC_THEMOVIEDB_API_KEY}`,)
         let ignore = false
         const controller = new AbortController()
-        async function fetchSearchResults() {
+        async function fetchTheMovieDBResults() {
             console.log("Fetching search results")
             setLoading(true)
             let responseBody = {}
             try {
                 const response = await fetch(
-                    `https://api.themoviedb.org/3/search/movie?api_key=${process.env.NEXT_PUBLIC_THEMOVIEDB_API_KEY}&language=en-US&page=1&include_adult=false&query=${query}`,
+                    `https://api.themoviedb.org/3/movie/${id}/reviews?api_key=${process.env.NEXT_PUBLIC_THEMOVIEDB_API_KEY}`,
                     { signal: controller.signal }
                 )
                 console.log("Fetching search results...")
@@ -44,16 +47,18 @@ function useMoviesSearch(query) {
                 setLoading(false)
             }
         }
-        if (query) {
-            fetchSearchResults()
+
+
+        if (id) {
+            fetchTheMovieDBResults()
         }
         return () => {
             ignore = true
             controller.abort()
         }
-    }, [ query ])
+    }, [ id ])
 
     return [ movies, loading, error ]
 }
 
-export default useMoviesSearch
+export default useGetReviews
