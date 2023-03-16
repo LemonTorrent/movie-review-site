@@ -60,7 +60,7 @@ function Reviews(props, { query }) {
     return (
         
         <SearchResults id="query-contents">
-            {reviews.length>0? <h2>Found reviews:</h2> : null}
+            {reviews.length>0? <h2>Found reviews:</h2> : <h2>No reviews found</h2>}
             {error && <ErrorContainer>An error occurred...</ErrorContainer>}
             {loading ? <Spinner /> : (
                 <div className="query-obj">
