@@ -44,8 +44,8 @@ function Reviews(props, { query }) {
 
     const [ inputQuery, setInputQuery ] = useState("")
 
-    const [ reviews, loading, error ] = useGetReviews(searchParams)
-    console.log("Reviews:", reviews)
+    const [ reviews, loading, error, ratings ] = useGetReviews(searchParams)
+    console.log("Ratings:", ratings)
 
     useEffect(()=>{
         if (!inputQuery) {
@@ -64,6 +64,10 @@ function Reviews(props, { query }) {
             {error && <ErrorContainer>An error occurred...</ErrorContainer>}
             {loading ? <Spinner /> : (
                 <div className="query-obj">
+                    {ratings.map(rating => {
+                        console.log("Rating: ", rating)
+                        return(<p>{rating.Source}: {rating.Value}</p>)
+                    })}
                     {reviews.map(review => (
                         <ReviewCard reviewObj={review} />
                     ))}
