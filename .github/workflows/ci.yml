@@ -17,8 +17,9 @@ jobs:
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
-        node-version: 18.x
+        node-version: 18
         cache: 'npm'
+        cache-dependency-path: final-project/package-lock.json
     - name: Lint project
       working-directory: ./final-project
       run: |
