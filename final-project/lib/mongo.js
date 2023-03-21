@@ -1,19 +1,25 @@
 
-const {MongoClient} = require('mongodb')
+import { MongoClient } from "mongodb"
 
-const mongoUrl = "mongodb+srv://MovieAdmin:<dbpassword>@moviedb.i9xkgqv.mongodb.net/?retryWrites=true&w=majority"
+const mongoUsername = process.env.MONGODB_USERNAME
+const mongoPassword = process.env.MONGODB_PASSWORD
+//const mongoDBName = process.env.MONGODB_NAME
+const mongoUrl = `mongodb+srv://${mongoUsername}:${mongoPassword}@moviedb.i9xkgqv.mongodb.net/?retryWrites=true&w=majority`
 
-let db = null
-exports.connectToDb = function(callback) {
-    MongoClient.connect(mongoUrl, function(err, client) {
-        if(err){
-            throw err
-        }
-        db = client.db("moviedb")
-        callback()
-    })
-}
+var db = null
+// MongoClient.connect(mongoUrl, function(err, client) {
+//     if(err){
+//         console.log("Err")
+//         throw err
+//     }
+//     console.log("client: ", client)
+//     db = client.db("MovieDB")
+//     console.log("Made connection to db")
+// })
+const client = new MongoClient(mongoUrl)
+const clientPromise = client.connect()
+export default clientPromise
 
-exports.getDbInstance = function () {
-    return db
-}
+// export function getDbInstance() {
+//     return db
+// }
