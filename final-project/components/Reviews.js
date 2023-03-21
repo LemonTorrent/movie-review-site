@@ -55,7 +55,7 @@ function Reviews(props, { query }) {
             console.log("Search and input queries in order:", searchParams, setInputQuery)
         }
 
-    })
+    }, [inputQuery, router, searchParams])
     
     return (
         
@@ -65,7 +65,7 @@ function Reviews(props, { query }) {
             {loading ? <Spinner /> : (
                 <div className="query-obj">
                     {reviews.map(review => (
-                        <ReviewCard reviewObj={review} />
+                        <ReviewCard reviewObj={review} key={review.id} />
                     ))}
                 </div>
             )}
