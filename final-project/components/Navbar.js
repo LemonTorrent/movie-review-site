@@ -30,7 +30,7 @@ const NavBarDiv = styled.div`
         justify-content: center;
     }
 
-    a {
+    h1 {
         text-decoration: none;
         color: white;
         padding: 10px;
@@ -42,7 +42,7 @@ export default function Navbar() {
     return (
         <NavBarDiv>
             <Link href={"/"}>
-                <h1>Movie Reviews</h1>
+                <h1>Benny's Movie Reviews</h1>
             </Link>
         </NavBarDiv>
     )

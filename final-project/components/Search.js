@@ -21,19 +21,44 @@ const searchResultStyle = styled.div `
     }
 `
 
+const SearchBar = styled.div`
+    background: white;
+    padding: 10px;
+    display: flex; /* or inline-flex */
+    flex-direction: column;
+
+    .search-title {
+        // padding-right: 20px;
+    }
+
+    .form-div {
+        margin-top: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    input {
+        width: 315px;
+    }
+`
+
 const SearchResults = styled.div`
     .query-contents {
         height: 93%;
+        padding: 0;
     }
     height: 90%;
     // color: green;
-    overflow-y: scroll;
-    padding: 10px;
+    // overflow-y: scroll;
+    // padding: 10px;
 
     .query-obj {
         // height: 87%;
         // overflow-y: scroll;
     }
+
+    background: lightgrey;    
 
 `
 
@@ -68,25 +93,33 @@ function Search(props, { query }) {
     return (
         
         <SearchResults id="query-contents">
-            <h2>Select a movie to check the ratings:</h2>
-            <form onSubmit={e => {
-                e.preventDefault()
-                console.log("e")
-                setSearchParams(inputQuery)
-                router.push(
-                    // {
-                    //     query: { inputQuery },
-                    // }
-                    `/search/${inputQuery}`,
-                    undefined,
-                    {shallow: true}
-                );
-                
-            }}>
-                <input value={inputQuery} onChange={e => {setInputQuery(e.target.value)}} />
-                <button type="submit">Search</button>
-            </form>
-            {movies.length>0? <h2>Found movies:</h2> : null}
+            <SearchBar>
+                <div className='search-title'>
+                    <h2>Select a movie to check the ratings:</h2>
+                </div>
+                <div className='form-div'>
+                    <form onSubmit={e => {
+                        e.preventDefault()
+                        console.log("e")
+                        setSearchParams(inputQuery)
+                        router.push(
+                            // {
+                            //     query: { inputQuery },
+                            // }
+                            `/search/${inputQuery}`,
+                            undefined,
+                            {shallow: true}
+                        );
+                        
+                    }}>
+                        <input value={inputQuery} onChange={e => {setInputQuery(e.target.value)}} />
+                        <button type="submit">Search</button>
+                    </form>
+                </div>
+
+            </SearchBar>
+            
+            {/* {movies.length>0? <h2>Found movies:</h2> : null} */}
             {error && <ErrorContainer>An error occurred...</ErrorContainer>}
             {loading ? <Spinner /> : (
                 <div className="query-obj">

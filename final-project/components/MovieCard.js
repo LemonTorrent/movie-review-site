@@ -13,7 +13,10 @@ function MovieCard ({ movieObj }) {
         @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
         // color: grey;
         // outline: 1px solid;
+        background: white;
         font-family: 'Lato', sans-serif;
+        padding: 10px;
+        margin: 10px;
 
         ul {
             // margin: 0;
