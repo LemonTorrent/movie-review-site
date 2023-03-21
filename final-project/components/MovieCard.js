@@ -5,10 +5,6 @@ import Link from 'next/link'
 
 function MovieCard ({ movieObj }) {
 
-    // console.log("Weather card object: ", movieObj)
-    // // const [date, setDate] = setState(new Date(weatherObj.dt))
-    // console.log("Transforming date: ", new Date(movieObj.dt * 1000))
-
     const Card = styled.div({
         color: 'red',
     })

@@ -1,5 +1,6 @@
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
+import Link from 'next/link'
 
 const NavBarDiv = styled.div`
     // background-color: #f4cce4;
@@ -40,7 +41,9 @@ const NavBarDiv = styled.div`
 export default function Navbar() {
     return (
         <NavBarDiv>
-            <h1>Movie Reviews</h1>
+            <Link href={"/"}>
+                <h1>Movie Reviews</h1>
+            </Link>
         </NavBarDiv>
     )
   }
