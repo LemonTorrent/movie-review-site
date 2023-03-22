@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react'
 
 function useGetReviews(id) {
+    const [ name, setName ] = useState("");
     const [ movies, setMovies ] = useState([])
     var movieInfoVar;
+
+    const [movieInfoConst, setMovieInfoConst] = useState({})
     // const [ ratings, setRatings ] = useState([]);
     const [ officialRatings, setOfficialRatings] = useState([]);
     var ratings;
@@ -49,7 +52,12 @@ function useGetReviews(id) {
             }
 
             if (!ignore) {
-                movieInfoVar = responseBody
+                if (responseBody){
+                    movieInfoVar = responseBody
+                    setName(movieInfoVar.title)
+                    setMovieInfoConst(responseBody)
+                }
+                console.log("Name is now ", name)
                 console.log("After returned, movieInfoVar is", movieInfoVar)
 
                 // setLoading(false)
@@ -150,7 +158,12 @@ function useGetReviews(id) {
         }
     }, [ id ])
 
-    return [ movies, loading, error, officialRatings]
+    console.log("Before return, movieInfoVar is ", movieInfoVar)
+    console.log("Before return, name is ", name)
+    console.log("Before return, movieInfoConst is ", movieInfoConst)
+
+
+    return [ movies, loading, error, movieInfoConst, officialRatings]
 }
 
 export default useGetReviews

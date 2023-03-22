@@ -35,6 +35,10 @@ const SearchResults = styled.div`
         // overflow-y: scroll;
     }
 
+    img {
+        height: 200px;
+    }
+
 `
 
 
@@ -44,8 +48,8 @@ function Reviews(props, { query }) {
 
     const [ inputQuery, setInputQuery ] = useState("")
 
-    const [ reviews, loading, error, ratings ] = useGetReviews(searchParams)
-    console.log("Ratings:", ratings)
+    const [ reviews, loading, error, movieInfo, ratings ] = useGetReviews(searchParams)
+    // console.log("Ratings:", ratings)
 
     useEffect(()=>{
         if (!inputQuery) {
@@ -56,11 +60,17 @@ function Reviews(props, { query }) {
         }
 
     })
+
+    // console.log("Poster: https://image.tmdb.org/t/p/original"+ movieInfo.poster_path)
     
     return (
         
         <SearchResults id="query-contents">
-            {reviews.length>0? <h2>Found reviews:</h2> : <h2>No reviews found</h2>}
+            {/* {reviews.length>0? <h2>Found reviews:</h2> : <h2>No reviews found</h2>} */}
+            {movieInfo.poster_path? <img src={"https://image.tmdb.org/t/p/original" + movieInfo.poster_path}/> : null}
+
+            {reviews.length>0? <h2>{movieInfo.title}</h2> : <h2>No reviews found</h2>}
+
             {error && <ErrorContainer>An error occurred...</ErrorContainer>}
             {loading ? <Spinner /> : (
                 <div className="query-obj">
