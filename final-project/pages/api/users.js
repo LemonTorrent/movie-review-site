@@ -38,6 +38,32 @@ export default async function (req, res) {
                 err: "Invalid request body for a user... expecting username and password"
             })
         }
+    }else if(req.method === "GET"){
+        const username = req.query.username
+        if(username){
+            //get the movie from the database
+            const user = await getUser(username)
+            //if checked with no errors
+            if(user && user != -1){
+                if(user == -2){
+                    //no matching movie found, send empty {}
+                    res.status(201).send({})
+                }else{
+                    //send movie back
+                    user.password = "hidden"
+                    res.status(201).send(user)
+                }
+            }else{
+                //something went wrong
+                res.status(500).send({err: "Error getting from database"})
+            }
+            //res.status(200).send({id: id})
+        }else{
+            //no id found in query
+            res.status(400).send({
+                err: "No username found in query"
+            })
+        }
     }
 }
 
