@@ -92,7 +92,7 @@ function Search(props, { query }) {
         }
 
     // }, [inputQuery, router.query.query])
-    }, [router.query.query])
+    }, [router.query.query, inputQuery])
 
     
     return (
