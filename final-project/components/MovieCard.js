@@ -1,3 +1,4 @@
+/** @jsxImportSource @emotion/react */
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
 import React, { setState, useState, useEffect } from 'react'
@@ -51,6 +52,17 @@ function MovieCard ({ movieObj }) {
         }
     `
 
+    const buttonCSS = css`
+        padding: 5px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        background-color: #fff;
+        cursor: pointer;
+        margin: 5px;
+        &:hover {
+            background-color: #eee;
+        }
+    `
 
     return(
         <CardStyle id="movie-card">
@@ -63,7 +75,7 @@ function MovieCard ({ movieObj }) {
                     
                 </ul>
                 <Link href={"/reviews/"+movieObj.id}>
-                    <button>Reviews</button>
+                    <button css={buttonCSS}>Reviews</button>
                 </Link>
             </div>
             

@@ -41,6 +41,22 @@ const SearchBar = styled.div`
 
     input {
         width: 315px;
+        padding: 5px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        margin: 5px;
+    }
+
+    button {
+        padding: 5px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        background-color: #fff;
+        cursor: pointer;
+        margin: 5px;
+        &:hover {
+            background-color: #eee;
+        }
     }
 
     h2 {
