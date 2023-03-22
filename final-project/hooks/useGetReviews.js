@@ -134,7 +134,7 @@ function useGetReviews(id) {
                 // setRatings(responseBody.results || [])
                 // setOfficialRatings(responseBody.Ratings || [])
                 console.log("Official ratings value:", officialRatings)
-                if (responseBody.Ratings.length > 0) {
+                if (responseBody && responseBody.Ratings && responseBody.Ratings.length > 0) {
                     var tempRatings = responseBody.Ratings;
                     var tempStr = ""
                     var tempInt;
