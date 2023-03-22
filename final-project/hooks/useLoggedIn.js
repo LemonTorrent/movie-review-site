@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
-import { isLoggedIn } from '../lib/clientsideAuth'
+import { getUsername, isLoggedIn } from '../lib/clientsideAuth'
 
 function useIsLoggedIn() {
-    const [ loggedIn, setLoggedIn ] = useState(false)
+    const [loggedIn, setLoggedIn] = useState(false)
+    const [username, setUsername] = useState("")
 
     useEffect(() => {
         //use cookies to check if logged in
@@ -10,10 +11,13 @@ function useIsLoggedIn() {
         //if not logged in, setLoggedIn to false
         if (isLoggedIn()) {
             setLoggedIn(true)
+            getUsername().then((u) => {
+                setUsername(u)
+            });
         }
     }, [setLoggedIn])
 
-    return [ loggedIn ]
+    return [loggedIn, username]
 }
 
 export default useIsLoggedIn
