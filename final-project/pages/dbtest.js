@@ -112,6 +112,18 @@ export default function DBTest() {
         console.log(resBody)
     }
 
+    async function getUser() {
+        const res = await fetch('./api/users?username=abc',
+        {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        const resBody = await res.json()
+        console.log(resBody)
+    }
+
     return (
         <>
             <button onClick={handleInsert}>Insert Test</button>
@@ -124,6 +136,7 @@ export default function DBTest() {
                 console.log("username: ", Cookies.get('username'))
             }}>Get Cookies</button>
             <button onClick={signout}>Signout</button>
+            <button onClick={getUser}>Get User</button>
         </>
         
     )
