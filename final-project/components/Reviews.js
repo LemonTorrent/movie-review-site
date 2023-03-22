@@ -71,9 +71,7 @@ function Reviews(props, { query }) {
             console.log("Search and input queries in order:", searchParams, setInputQuery)
         }
 
-    })
-
-    // console.log("Poster: https://image.tmdb.org/t/p/original"+ movieInfo.poster_path)
+    }, [inputQuery, router, searchParams])
     
     return (
         
@@ -87,7 +85,7 @@ function Reviews(props, { query }) {
                     <MovieHeader>
                         {movieInfo.poster_path? <img src={"https://image.tmdb.org/t/p/original" + movieInfo.poster_path}/> : null}
                         <StyledRatings>
-                            {reviews.length>0? <h2>{movieInfo.title}</h2> : <h2>No reviews found</h2>}
+                            <h2>{movieInfo.title}</h2>
                             {ratings.map(rating => {
                                     // console.log("Rating: ", rating)
                                     return(<p>{rating.Source}: {rating.Value}</p>)
@@ -95,8 +93,10 @@ function Reviews(props, { query }) {
                         </StyledRatings>
                         
                     </MovieHeader>
+                    {reviews.length>0? null : <h2>No reviews found</h2>}
+
                     {reviews.map(review => (
-                        <ReviewCard reviewObj={review} />
+                        <ReviewCard reviewObj={review} key={review.id} />
                     ))}
                 </div>
             )}

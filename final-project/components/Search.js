@@ -88,7 +88,7 @@ function Search(props, { query }) {
             setInputQuery(router.query.query)
         }
 
-    })
+    }, [inputQuery, router.query.query])
     
     return (
         
@@ -124,7 +124,7 @@ function Search(props, { query }) {
             {loading ? <Spinner /> : (
                 <div className="query-obj">
                     {movies.map(movie => (
-                        <MovieCard movieObj={movie} />
+                        <MovieCard movieObj={movie} key={movie.id}/>
                     ))}
                 </div>
             )}
