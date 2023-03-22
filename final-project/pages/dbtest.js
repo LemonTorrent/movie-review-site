@@ -27,7 +27,7 @@ export default function DBTest() {
             },
             body: JSON.stringify({
                 movieID: 5,
-                reviewerID: 1,
+                reviewer: "abc",
                 stars: 5,
                 content: "I like this movie",
                 random: "bfheuiob"
@@ -70,7 +70,7 @@ export default function DBTest() {
             },
             body: JSON.stringify({
                 movieID: 5,
-                reviewerID: 1,
+                reviewer: "abc",
                 stars: 3,
                 content: "Decent"
             })
@@ -88,7 +88,7 @@ export default function DBTest() {
             },
             body: JSON.stringify({
                 movieID: 5,
-                reviewerID: 1
+                reviewer: "abc"
             })
         })
         const resBody = await res.json()
