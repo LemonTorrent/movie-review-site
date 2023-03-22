@@ -14,37 +14,57 @@ function MovieCard ({ movieObj }) {
         // color: grey;
         // outline: 1px solid;
         background: white;
-        font-family: 'Lato', sans-serif;
         padding: 10px;
         margin: 10px;
+        border-radius: 5px;
+        display: flex;
+
 
         ul {
-            // margin: 0;
+            
             padding: 10px;
+            padding-top: 0;
+            font: "Lucida Console", "Courier New", monospace !important;
         }
 
         li {
             list-style-type: none;
+            // font-family: 'Lato', sans-serif;
             
+            // font-family: "Lucida Console", "Courier New", monospace;
+
         }
 
-        .date {
-            font-size: 25px;
+        .title {
+            font-weight: bold;
+            font-size: 20px;
+        }
 
+        img {
+            height: 150px;
+        }        
+        
+        a {
+            margin-left: 10px;
         }
     `
 
 
     return(
-        <CardStyle id="weather-card">
-            <ul>
-                <li>Title: {movieObj.original_title}</li>
-                <li>Overview: {movieObj.overview}</li>
-                
-            </ul>
-            <Link href={"/reviews/"+movieObj.id}>
-                <button>Reviews</button>
-            </Link>
+        <CardStyle id="movie-card">
+            <img src={"https://image.tmdb.org/t/p/original" + movieObj.poster_path}/>
+
+            <div>
+                <ul>
+                    <li className="title">{movieObj.original_title}</li>
+                    <li>Overview: {movieObj.overview}</li>
+                    
+                </ul>
+                <Link href={"/reviews/"+movieObj.id}>
+                    <button>Reviews</button>
+                </Link>
+            </div>
+            
 
         </CardStyle>       
     )

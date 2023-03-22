@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 
 function useGetReviews(id) {
-    const [ name, setName ] = useState("");
     const [ movies, setMovies ] = useState([])
     var movieInfoVar;
 
@@ -15,14 +14,14 @@ function useGetReviews(id) {
     // want name, id, date
 
     useEffect(() => {
-        console.log("UseGetReveiws Calling use effect with id", id);
-        console.log("Loooking at ", `https://api.themoviedb.org/3/movie/${id}/reviews?api_key=${process.env.NEXT_PUBLIC_THEMOVIEDB_API_KEY}`,)
+        // console.log("UseGetReveiws Calling use effect with id", id);
+        // console.log("Loooking at ", `https://api.themoviedb.org/3/movie/${id}/reviews?api_key=${process.env.NEXT_PUBLIC_THEMOVIEDB_API_KEY}`,)
         let ignore = false
         const controller = new AbortController()
         async function fetchMovieName() {
             // https://api.themoviedb.org/3/movie/24428?api_key=7ae35763cfeb8a9f0d0015cfabeb9efc
             setLoading(true)
-            console.log("Fetching search results")
+            // console.log("Fetching search results")
             setLoading(true)
             let responseBody = {}
             try {
@@ -30,7 +29,7 @@ function useGetReviews(id) {
                     `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.NEXT_PUBLIC_THEMOVIEDB_API_KEY}`,
                     { signal: controller.signal }
                 )
-                console.log("Fetching search results...")
+                // console.log("Fetching search results...")
 
                 // console.log("Response: ", response.json);
                 if (response.status !== 200) {
@@ -54,18 +53,16 @@ function useGetReviews(id) {
             if (!ignore) {
                 if (responseBody){
                     movieInfoVar = responseBody
-                    setName(movieInfoVar.title)
                     setMovieInfoConst(responseBody)
                 }
-                console.log("Name is now ", name)
-                console.log("After returned, movieInfoVar is", movieInfoVar)
+                // console.log("After returned, movieInfoVar is", movieInfoVar)
 
                 // setLoading(false)
             }
 
         }
         async function fetchTheMovieDBResults() {
-            console.log("Fetching search results")
+            // console.log("Fetching search results")
             // setLoading(true)
             let responseBody = {}
             try {
@@ -73,14 +70,14 @@ function useGetReviews(id) {
                     `https://api.themoviedb.org/3/movie/${id}/reviews?api_key=${process.env.NEXT_PUBLIC_THEMOVIEDB_API_KEY}`,
                     { signal: controller.signal }
                 )
-                console.log("Fetching search results...")
+                // console.log("Fetching search results...")
 
                 // console.log("Response: ", response.json);
                 if (response.status !== 200) {
                     console.log("== status:", response.status)
                     setError(true)
                 } else {
-                    setError(false)
+                    // setError(false)
                     responseBody = await response.json()
                     console.log("Response body: ", responseBody)
                 }
@@ -101,7 +98,7 @@ function useGetReviews(id) {
         }
 
         async function fetchMovieRating() {
-            console.log("Fetching search results for movie title ", movieInfoVar.original_title)
+            // console.log("Fetching search results for movie title ", movieInfoVar.original_title)
             setLoading(true)
             let responseBody = {}
             try {
@@ -109,14 +106,14 @@ function useGetReviews(id) {
                     `https://www.omdbapi.com/?t=${movieInfoVar.original_title}&plot=full&apikey=${process.env.NEXT_PUBLIC_OMDBAPI_API_KEY}`,
                     { signal: controller.signal }
                 )
-                console.log("Fetching search results...")
+                // console.log("Fetching search results...")
 
                 // console.log("Response: ", response.json);
                 if (response.status !== 200) {
                     console.log("== status:", response.status)
                     setError(true)
                 } else {
-                    setError(false)
+                    // setError(false)
                     responseBody = await response.json()
                     console.log("Fetch movie rating: ", responseBody)
                 }
@@ -133,8 +130,34 @@ function useGetReviews(id) {
             if (!ignore) {
                 // setRatings(responseBody.results || [])
                 ratings = responseBody
-                setOfficialRatings(responseBody.Ratings || [])
-                console.log("Returned ratings: ", ratings)
+                // setOfficialRatings(responseBody.Ratings || [])
+                console.log("Official ratings value:", officialRatings)
+                if (responseBody.Ratings.length > 0) {
+                    var tempRatings = responseBody.Ratings;
+                    var tempStr = ""
+                    var tempInt;
+                    tempRatings.map((obj) => {
+                        // tempInt = 0;
+
+                        if (obj.Source == "Rotten Tomatoes") {
+                            console.log("Rotton tomatoes!")
+                            tempInt = parseInt(obj.Value.slice(0, -1))
+                            console.log("temp string: ", tempInt)
+                            obj.Value = (tempInt / 10).toString() + "/10"
+                            console.log("Object: ", obj.Value)
+                        } else if (obj.Source === "Metacritic"){
+                            console.log("Metacritic! d")
+                            tempInt = parseInt(obj.Value.slice(0, -3))
+                            obj.Value = (tempInt / 10).toString() + "/10"
+                            console.log("Object: ", obj.Value)
+                        }
+                    })
+
+                    setOfficialRatings(tempRatings)
+                } else {
+                    setOfficialRatings([])
+                }
+                // console.log("Returned ratings: ", ratings)
                 setLoading(false)
             }
         }
@@ -144,10 +167,10 @@ function useGetReviews(id) {
             // fetchTheMovieDBResults()
             fetchMovieName()
                 .then(()=>{
-                    console.log("Found name, starting to fetch reviews...")
+                    // console.log("Found name, starting to fetch reviews...")
                     fetchTheMovieDBResults()
                         .then(()=>{
-                            console.log("Searching second round of ratings...")
+                            // console.log("Searching second round of ratings...")
                             fetchMovieRating()
                         })
                 })
@@ -158,9 +181,9 @@ function useGetReviews(id) {
         }
     }, [ id ])
 
-    console.log("Before return, movieInfoVar is ", movieInfoVar)
-    console.log("Before return, name is ", name)
-    console.log("Before return, movieInfoConst is ", movieInfoConst)
+    // console.log("Before return, movieInfoVar is ", movieInfoVar)
+    // console.log("Before return, name is ", name)
+    // console.log("Before return, movieInfoConst is ", movieInfoConst)
 
 
     return [ movies, loading, error, movieInfoConst, officialRatings]

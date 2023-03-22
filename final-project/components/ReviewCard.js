@@ -17,7 +17,8 @@ function ReviewCard ({ reviewObj }) {
         @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
         // color: grey;
         // outline: 1px solid;
-        font-family: 'Lato', sans-serif;
+        // border-radius: 25px;
+
 
         ul {
             // margin: 0;
@@ -33,13 +34,17 @@ function ReviewCard ({ reviewObj }) {
             font-size: 25px;
 
         }
+
+        .author {
+            font-weight: bold;
+        }
     `
 
 
     return(
         <CardStyle id="weather-card">
             <ul>
-                <li>Author: {reviewObj.author}</li>
+                <li className='author'>Author: {reviewObj.author}</li>
                 <li>Review: {reviewObj.content}</li>
                 
             </ul>

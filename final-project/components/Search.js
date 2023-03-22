@@ -24,6 +24,7 @@ const searchResultStyle = styled.div `
 const SearchBar = styled.div`
     background: white;
     padding: 10px;
+    padding-bottom: 20px;
     display: flex; /* or inline-flex */
     flex-direction: column;
 
@@ -41,13 +42,15 @@ const SearchBar = styled.div`
     input {
         width: 315px;
     }
+
+    h2 {
+        font-weight: normal;
+        font-size: 30px;
+    }
 `
 
 const SearchResults = styled.div`
-    .query-contents {
-        height: 93%;
-        padding: 0;
-    }
+
     height: 90%;
     // color: green;
     // overflow-y: scroll;

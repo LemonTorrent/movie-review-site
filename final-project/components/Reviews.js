@@ -7,51 +7,46 @@ import ReviewCard from './ReviewCard'
 // import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 
-const searchResultStyle = styled.div `
-    .query-contents {
-        height: 93%;
-        color: green !important;
-    }
-    // height: 93%;
-    color: green;
-
-    .query-obj {
-        height: 87%;
-        overflow-y: scroll;
-    }
-`
-
 const MovieHeader = styled.div `
     display: flex;
     flex-direction: row;
+    outline: dashed grey;
+    padding: 20px;
+    margin-bottom: 20px;
 
     img {
         height: 200px;
     }
-
+    
 `
 
 const SearchResults = styled.div`
-    .query-contents {
-        height: 93%;
-    }
+    
     height: 90%;
     // color: green;
     overflow-y: scroll;
     padding: 10px;
+
+    .query-contents {
+        height: 93%;
+    }
 
     .query-obj {
         // height: 87%;
         // overflow-y: scroll;
     }
 
-    
-
 `
 
 const StyledRatings = styled.div`
+    margin-left: 20px;
     display: flex;
     flex-direction: column;
+    h2 {
+        font-size: 40px;
+        margin-bottom: 10px;
+        font-weight: normal;
+    }
 `
 
 function Reviews(props, { query }) {
