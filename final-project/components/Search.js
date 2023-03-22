@@ -69,8 +69,8 @@ const SearchResults = styled.div`
 function Search(props, { query }) {
     const router = useRouter();
     const [ searchParams, setSearchParams ] = useState(router.query.query)
-    console.log("Path: ", router.query.query)
-    console.log("Search parameters: ", searchParams)
+    // console.log("Path: ", router.query.query)
+    // console.log("Search parameters: ", searchParams)
 
     // const [ inputQuery, setInputQuery ] = useState(useRouter.get("q") || "")
     const [ inputQuery, setInputQuery ] = useState(router.query.query || "")
@@ -83,7 +83,7 @@ function Search(props, { query }) {
 
     // const [ repos, loading, error ] = useReposSearch(useRouter.basePath)
     const [ movies, loading, error ] = useMoviesSearch(searchParams)
-    console.log("Movies:", movies)
+    // console.log("Movies:", movies)
 
     useEffect(()=>{
         if (!inputQuery) {
@@ -118,14 +118,14 @@ function Search(props, { query }) {
                         
                     }}>
                         <input value={inputQuery} onChange={e => {
-                            console.log("Changing input value to:", e.target.value)
+                            // console.log("Changing input value to:", e.target.value)
                             if (e.target.value.length == 0) {
                                 setInputQuery("")
                             } else {
                                 setInputQuery(e.target.value)
                             }
 
-                            console.log("Changed input value to:", inputQuery)
+                            // console.log("Changed input value to:", inputQuery)
                             }} />
                         <button type="submit">Search</button>
                     </form>
