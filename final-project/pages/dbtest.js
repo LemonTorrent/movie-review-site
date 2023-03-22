@@ -1,4 +1,5 @@
 import React from 'react'
+import Cookies from 'js-cookie'
 
 export default function DBTest() {
 
@@ -23,11 +24,12 @@ export default function DBTest() {
         {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "x-csrf-token": Cookies.get("csrf")
             },
             body: JSON.stringify({
                 movieID: 5,
-                reviewer: "abc",
+                //reviewer: "abc",
                 stars: 5,
                 content: "I like this movie",
                 random: "bfheuiob"
@@ -42,7 +44,8 @@ export default function DBTest() {
         {
             method: "GET",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "x-csrf-token": Cookies.get("csrf")
             }
         })
         const resBody = await res.json()
@@ -66,7 +69,8 @@ export default function DBTest() {
         {
             method: "PATCH",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "x-csrf-token": Cookies.get("csrf")
             },
             body: JSON.stringify({
                 movieID: 5,
@@ -84,12 +88,25 @@ export default function DBTest() {
         {
             method: "DELETE",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "x-csrf-token": Cookies.get("csrf")
             },
             body: JSON.stringify({
-                movieID: 5,
-                reviewer: "abc"
+                movieID: 5
+                //reviewer: "abc"
             })
+        })
+        const resBody = await res.json()
+        console.log(resBody)
+    }
+
+    async function signout() {
+        const res = await fetch('./api/logout',{
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "x-csrf-token": Cookies.get("csrf")
+            }
         })
         const resBody = await res.json()
         console.log(resBody)
@@ -104,8 +121,9 @@ export default function DBTest() {
             <button onClick={handleUpdateReview}>Update Review</button>
             <button onClick={handleDelete}>Delete Review</button>
             <button onClick={() => {
-                console.log("cookie: ", document.cookie)
+                console.log("username: ", Cookies.get('username'))
             }}>Get Cookies</button>
+            <button onClick={signout}>Signout</button>
         </>
         
     )

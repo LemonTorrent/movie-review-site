@@ -8,6 +8,8 @@ export const generateCSRFToken = (token) => {
     return "9876zyxw"
 }
 
+const CSRF = "9876zyxw"
+
 export const setAuthCookie = (res, token, username) => {
     res.setHeader("Set-Cookie", [
         serialize("auth", token, {
@@ -28,22 +30,43 @@ export const setAuthCookie = (res, token, username) => {
 }
 
 export const clearAuthCookie = (res) => {
-    res.setHeader("Set-Cookie", serialize("auth", "", {
-        path: "/",
-        httpOnly: true
-    }))
+    res.setHeader("Set-Cookie", [
+        serialize("auth", "", {
+            path: "/",
+            httpOnly: true
+        }),
+        serialize("csrf", "",{
+            path: "/"
+        }),
+        serialize("username", "",{
+            path: "/"
+        })
+    ])
 }
 
-export const requireAuth = handler => (req, res) => {
-    console.log("== req.cookies:", req.cookies)
+// export const requireAuth = handler => (req, res) => {
+//     console.log("== req.cookies:", req.cookies)
+//     const validAuth = authTokenIsValid(req.cookies.auth, req.cookies.username)
+//     const validCsrf = csrfTokenIsValid(
+//         req.headers['x-csrf-token']
+//     )
+//     if (validAuth && validCsrf) {
+//         return handler(req, res)
+//     } else {
+//         res.status(401).send({ err: "Unauthorized!" })
+//     }
+// }
+
+export function isAuthenticated(req, res) {
+    console.log(`auth: ${req.cookies.auth}, username: ${req.cookies.username}`)
     const validAuth = authTokenIsValid(req.cookies.auth, req.cookies.username)
-    const validCsrf = csrfTokenIsValid(
-        req.headers['x-csrf-token']
-    )
-    if (validAuth && validCsrf) {
-        return handler(req, res)
-    } else {
-        res.status(401).send({ err: "Unauthorized!" })
+    console.log(`csrf: ${req.headers['x-csrf-token']}`)
+    const validCsrf = csrfTokenIsValid(req.headers['x-csrf-token'])
+
+    if(validAuth && validCsrf){
+        return true
+    }else{
+        return false
     }
 }
 

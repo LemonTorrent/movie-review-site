@@ -1,3 +1,4 @@
+import { isAuthenticated } from '../../lib/auth'
 import clientPromise from '../../lib/mongo'
 import { extractValidFields, validateAgainstSchema } from '../../lib/validation'
 const {ObjectId} = require('mongodb')
@@ -6,29 +7,38 @@ const mongoDBName = process.env.MONGODB_NAME
 //expected review format
 export const reviewSchema = {
     movieID: {required: true},//int
-    reviewer: {required: true},//username
+    reviewer: {required: false},//dont include, pulled from cookie
     stars: {required: true},//int
     content: {required: false}//string
 }
 
 export default async function (req, res) {
     if(req.method === "POST") {
-        if(validateAgainstSchema(req.body, reviewSchema)){//make sure request body matches schema
-
-            const review = await addReview(req.body)//add the review
-            if(review && review != -1){
-                res.status(201).send(review)
+        if(isAuthenticated(req, res)){
+            if(validateAgainstSchema(req.body, reviewSchema)){//make sure request body matches schema
+                req.body.reviewer = req.cookies.username
+                console.log(req.body.reviewer)
+                const review = await addReview(req.body)//add the review
+                if(review && review != -1){
+                    res.status(201).send(review)
+                }else{
+                    res.status(500).send({err: "Error inserting into database"})
+                }
+    
             }else{
-                res.status(500).send({err: "Error inserting into database"})
+                res.status(400).send({
+                    err: "Invalid request body for a movie... expecting movieID and title"
+                })
             }
-
         }else{
-            res.status(400).send({
-                err: "Invalid request body for a movie... expecting movieID and title"
+            res.status(401).send({
+                err: "Unauthorized"
             })
         }
         
+        
     }else if(req.method === "GET"){
+        //console.log("isAuthenticated: ", isAuthenticated(req, res))
         const id = req.query.id
         if(id){
             const reviews = await getReviewsByMovieId(id)
@@ -50,44 +60,59 @@ export default async function (req, res) {
         }
         
     }else if(req.method === "PATCH"){
-        if(validateAgainstSchema(req.body, reviewSchema)){//make sure request body matches schema
-
-            const count = await editReview(req.body)//add the review
-            if(count && count != -1){
-                if(count == -2){
-                    res.status(201).send({msg: "Nothing to update"})
+        if(isAuthenticated(req, res)){
+            if(validateAgainstSchema(req.body, reviewSchema)){//make sure request body matches schema
+                req.body.reviewer = req.cookies.username
+                const count = await editReview(req.body)//add the review
+                if(count && count != -1){
+                    if(count == -2){
+                        res.status(201).send({msg: "Nothing to update"})
+                    }else{
+                        res.status(201).send({msg: "Successfully updated review"})
+                    }
+                    
                 }else{
-                    res.status(201).send({msg: "Successfully updated review"})
+                    res.status(500).send({err: "Error updating into database"})
                 }
-                
+    
             }else{
-                res.status(500).send({err: "Error updating into database"})
+                res.status(400).send({
+                    err: "Invalid request body for a movie... expecting movieID and title"
+                })
             }
-
         }else{
-            res.status(400).send({
-                err: "Invalid request body for a movie... expecting movieID and title"
+            res.status(401).send({
+                err: "Unauthorized"
             })
         }
+        
     }else if(req.method === "DELETE"){
-        if(req.body.movieID && req.body.reviewer){
-            const result = await deleteReview(req.body.movieID, req.body.reviewer)
-            
-            if(result && result != -1){
-                if(result == -2){
-                    res.status(201).send({msg: "Nothing to delete"})
+        if(isAuthenticated(req,res)){
+            req.body.reviewer = req.cookies.username
+            if(req.body.movieID && req.body.reviewer){
+                const result = await deleteReview(req.body.movieID, req.body.reviewer)
+                
+                if(result && result != -1){
+                    if(result == -2){
+                        res.status(201).send({msg: "Nothing to delete"})
+                    }else{
+                        res.status(201).send({msg: "Deleted"})
+                    }
                 }else{
-                    res.status(201).send({msg: "Deleted"})
+                    res.status(500).send({err: "Error getting from database"})
                 }
+                //res.status(200).send({id: id})
             }else{
-                res.status(500).send({err: "Error getting from database"})
+                res.status(400).send({
+                    err: "Request body needs movieID and reviewer"
+                })
             }
-            //res.status(200).send({id: id})
         }else{
-            res.status(400).send({
-                err: "Request body needs movieID and reviewer"
+            res.status(401).send({
+                err: "Unauthorized"
             })
         }
+        
         
     }
 }
@@ -176,6 +201,26 @@ async function addReview(body) {
                 movieValues
             )
             
+            const userCollection = await db.collection('users')
+            const userResult = await userCollection.find({
+                username: review.reviewer
+            }).toArray()
+            if(userResult[0]){
+                const userValues = {
+                    username: userResult[0].username,
+                    password: userResult[0].password,
+                    level: userResult[0].level,
+                    reviews: [{movieID: movieID}, ...userResult[0].reviews]
+                }
+
+                const userAddResult = await userCollection.replaceOne(
+                    {username: userResult[0].username},
+                    userValues
+                )
+            }else{
+                return -1
+            }
+
             return review//return the added review
         }else{
             return -1
@@ -227,6 +272,28 @@ async function deleteReview(movieID, reviewer){
                 {movieID: movieID},
                 movieValues
             )
+
+            const userCollection = await db.collection('users')
+            const userResult = await userCollection.find({
+                username: reviewer
+            }).toArray()
+            if(userResult[0]){
+                const userValues = {
+                    username: userResult[0].username,
+                    password: userResult[0].password,
+                    level: userResult[0].level,
+                    reviews: userResult[0].reviews.filter(review => {
+                        return review.movieID !== movieID
+                    })//[movieID, ...userResult[0].reviews]
+                }
+
+                const userAddResult = await userCollection.replaceOne(
+                    {username: userResult[0].username},
+                    userValues
+                )
+            }else{
+                return -1
+            }
             
             return result.matchedCount > 0 ? result.matchedCount : -2
         }else{
