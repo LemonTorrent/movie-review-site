@@ -191,6 +191,12 @@ async function addReview(body) {
             {movieID: movieID},
             movieValues
         )
+        if (result.upsertedCount > 0 || result.modifiedCount > 0) {
+            console.log("Added review")
+        } else {
+            console.log("Error adding review", result)
+            return -1
+        }
         
         const userCollection = await db.collection('users')
         const userResult = await userCollection.find({
@@ -215,6 +221,7 @@ async function addReview(body) {
                 return -1
             }
         }else{
+            console.log("Error: user not found")
             return -1
         }
 

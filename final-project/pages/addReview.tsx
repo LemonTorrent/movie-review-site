@@ -4,6 +4,7 @@ import {css} from "@emotion/react";
 import {useRouter} from "next/router";
 import Cookies from "js-cookie";
 import {useState} from "react";
+import { getUsername } from "@/lib/clientsideAuth";
 
 const formCSS = css`
     display: flex;
@@ -42,9 +43,10 @@ export default function SearchResults() {
                 "x-csrf-token": Cookies.get("csrf") ?? ""
             },
             body: JSON.stringify({
-                movieID,
+                movieID: Number(movieID),
                 stars,
                 content,
+                reviewer: await getUsername(),
             })
         })
         const resBody = await res.json()
