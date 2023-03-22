@@ -35,9 +35,9 @@ export default async function reviews(req, res) {
             
             if(reviews && reviews != -1){
                 if(reviews == -2){
-                    res.status(201).send({})
+                    res.status(200).send({})
                 }else{
-                    res.status(201).send(reviews)
+                    res.status(200).send(reviews)
                 }
             }else{
                 res.status(500).send({err: "Error getting from database"})
