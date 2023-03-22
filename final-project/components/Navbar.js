@@ -49,12 +49,12 @@ const buttonLink = css`
     background-color: black;
     border: 1px solid white;
     border-radius: 5px;
-    margin: 10px;
+    margin: 5px;
 `
 
 const FixedRight = styled.div`
     position: absolute;
-    right: 0;
+    right: 10px;
     top: 0;
     //height: 100%;
     display: flex;
