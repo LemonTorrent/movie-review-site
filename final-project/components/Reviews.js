@@ -1,11 +1,18 @@
+/** @jsxImportSource @emotion/react */
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable @next/next/no-img-element */
 import React, { useContext, useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Spinner from '../components/Spinner'
 import ErrorContainer from '../components/ErrorContainer'
 import useGetReviews from '../hooks/useGetReviews'
 import ReviewCard from './ReviewCard'
-// import { css } from '@emotion/react'
+import { css } from '@emotion/react'
 import styled from '@emotion/styled'
+
+import { isLoggedIn } from '../lib/clientsideAuth'
+import Link from 'next/link'
+import useIsLoggedIn from '../hooks/useLoggedIn'
 
 const MovieHeader = styled.div `
     display: flex;
@@ -49,6 +56,16 @@ const StyledRatings = styled.div`
     }
 `
 
+const buttonLink = css`
+    text-decoration: none;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin: 5px;
+    max-width: 10em;
+    text-align: center;
+`
+
 function Reviews(props, { query }) {
     const router = useRouter();
     const [ searchParams, setSearchParams ] = useState(router.query.query)
@@ -57,6 +74,8 @@ function Reviews(props, { query }) {
 
     const [ reviews, loading, error, movieInfo, ratings ] = useGetReviews(searchParams)
     // console.log("Ratings:", ratings)
+
+    const [isLoggedIn] = useIsLoggedIn()
 
     useEffect(()=>{
         if (!inputQuery) {
@@ -85,6 +104,7 @@ function Reviews(props, { query }) {
                                     // console.log("Rating: ", rating)
                                     return(<p>{rating.Source}: {rating.Value}</p>)
                                 })}
+                                {isLoggedIn ? <Link href={"/addReview"} css={buttonLink}>Add Review</Link> : <p>Log in to add review</p>}
                         </StyledRatings>
                         
                     </MovieHeader>

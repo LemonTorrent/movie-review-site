@@ -5,7 +5,7 @@ export function isLoggedIn() {
 }
 
 export async function signout() {
-    const res = await fetch('./api/logout',{
+    const res = await fetch('/api/logout',{
         method: "POST",
         headers: {
             "Content-Type": "application/json",
