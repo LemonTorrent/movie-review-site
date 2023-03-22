@@ -28,7 +28,9 @@ const MovieHeader = styled.div `
     img {
         height: 200px;
     }
-
+    outline: dashed grey;
+    padding: 20px;
+    margin-bottom: 20px;
 `
 
 const SearchResults = styled.div`
@@ -50,8 +52,13 @@ const SearchResults = styled.div`
 `
 
 const StyledRatings = styled.div`
+    margin-left: 20px;
     display: flex;
     flex-direction: column;
+    h2 {
+        font-size: 40px;
+        margin-bottom: 10px;
+    }
 `
 
 function Reviews(props, { query }) {
