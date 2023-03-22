@@ -160,6 +160,7 @@ async function addReview(body) {
         const movieResult = await movieCollection.find({
             movieID: parseInt(movieID)//get movie by movieID
         }).toArray()
+        console.log("movie: ", movieResult[0])
         
         if(movieResult[0]){//if the movie is found
             review.submitted = Date.now()
