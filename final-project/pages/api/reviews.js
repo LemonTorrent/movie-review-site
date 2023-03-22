@@ -11,7 +11,7 @@ export const reviewSchema = {
     content: {required: false}//string
 }
 
-export default async function (req, res) {
+export default async function reviews(req, res) {
     if(req.method === "POST") {
         if(validateAgainstSchema(req.body, reviewSchema)){//make sure request body matches schema
 
