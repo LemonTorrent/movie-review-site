@@ -3,8 +3,11 @@ import { MongoClient } from "mongodb"
 
 const mongoUsername = process.env.MONGODB_USERNAME
 const mongoPassword = process.env.MONGODB_PASSWORD
+const mongoServer = process.env.MONGODB_SERVER ?? "moviedb.i9xkgqv.mongodb.net"
 //const mongoDBName = process.env.MONGODB_NAME
-const mongoUrl = `mongodb+srv://${mongoUsername}:${mongoPassword}@moviedb.i9xkgqv.mongodb.net/?retryWrites=true&w=majority`
+const mongoUrl = `mongodb://${mongoUsername}:${mongoPassword}@${mongoServer}/?retryWrites=true&w=majority`
+
+//console.log("mongoUrl: ", mongoUrl)
 
 var db = null
 // MongoClient.connect(mongoUrl, function(err, client) {
