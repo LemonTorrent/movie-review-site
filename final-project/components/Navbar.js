@@ -1,6 +1,10 @@
+/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import Link from 'next/link'
+
+import { signout } from '../lib/clientsideAuth'
+import useIsLoggedIn from '../hooks/useLoggedIn'
 
 const NavBarDiv = styled.div`
     // background-color: #f4cce4;
@@ -38,13 +42,37 @@ const NavBarDiv = styled.div`
     }
 `
 
+const buttonLink = css`
+    text-decoration: none;
+    color: white;
+    padding: 10px;
+    font-size: 20px;
+    background-color: black;
+    border: 1px solid white;
+    border-radius: 5px;
+    margin: 5px;
+`
+
+const FixedRight = styled.div`
+    position: absolute;
+    right: 10px;
+    top: 0;
+    //height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+`
+
 export default function Navbar() {
+    const [isLoggedIn] = useIsLoggedIn()
     return (
         <NavBarDiv>
             <Link href={"/"}>
-                <h1>Benny's Movie Reviews</h1>
+                <h1>Benny&apos;s Movie Reviews</h1>
             </Link>
+            <FixedRight>
+            {isLoggedIn ? (<button css={buttonLink} onClick={signout}>Log out</button>) : (<Link href={"/login"} css={buttonLink}>Login</Link>)}
+            </FixedRight>
         </NavBarDiv>
     )
-  }
-  
+}

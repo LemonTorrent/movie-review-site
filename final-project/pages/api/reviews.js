@@ -11,7 +11,7 @@ export const reviewSchema = {
     content: {required: false}//string
 }
 
-export default async function (req, res) {
+export default async function reviews(req, res) {
     if(req.method === "POST") {
         if(validateAgainstSchema(req.body, reviewSchema)){//make sure request body matches schema
 
@@ -35,9 +35,9 @@ export default async function (req, res) {
             
             if(reviews && reviews != -1){
                 if(reviews == -2){
-                    res.status(201).send({})
+                    res.status(200).send({})
                 }else{
-                    res.status(201).send(reviews)
+                    res.status(200).send(reviews)
                 }
             }else{
                 res.status(500).send({err: "Error getting from database"})
@@ -161,25 +161,71 @@ async function addReview(body) {
             movieID: parseInt(movieID)//get movie by movieID
         }).toArray()
         
-        if(movieResult[0]){//if the movie is found
-            review.submitted = Date.now()
-            review.lastModified = review.submitted
+        if(!movieResult[0]){//if the movie is found not found then we need to add it
             const movieValues = {//set up new movie values
-                movieID: movieResult[0].movieID,
-                title: movieResult[0].title,
-                reviews: [review, ...movieResult[0].reviews]
+                movieID: movieID,
+                title: "",//left blank for now
+                reviews: []
+            };
+
+            movieResult[0] = movieValues;//use this to add the review
+
+            const result = await movieCollection.insertOne(movieValues)//insert new movie
+            if(result.acknowledged){
+                console.log("Added movie")
+            }else{
+                console.log("Error adding movie")
+                return -1;
+            }
+        }
+
+        review.submitted = Date.now()
+        review.lastModified = review.submitted
+        const movieValues = {//set up new movie values
+            movieID: movieResult[0].movieID,
+            title: movieResult[0].title,
+            reviews: [review, ...movieResult[0].reviews]
+        }
+
+        const result = await movieCollection.replaceOne(//replace old movie entry with new one
+            {movieID: movieID},
+            movieValues
+        )
+        if (result.upsertedCount > 0 || result.modifiedCount > 0) {
+            console.log("Added review")
+        } else {
+            console.log("Error adding review", result)
+            return -1
+        }
+        
+        const userCollection = await db.collection('users')
+        const userResult = await userCollection.find({
+            username: review.reviewer
+        }).toArray()
+        if(userResult[0]){
+            const userValues = {
+                username: userResult[0].username,
+                password: userResult[0].password,
+                level: userResult[0].level,
+                reviews: [{movieID: movieID}, ...userResult[0].reviews]
             }
 
-            const result = await movieCollection.replaceOne(//replace old movie entry with new one
-                {movieID: movieID},
-                movieValues
+            const userAddResult = await userCollection.replaceOne(
+                {username: userResult[0].username},
+                userValues
             )
-            
-            return review//return the added review
+            if(userAddResult.acknowledged){
+                console.log("Added review to user")
+            } else {
+                console.log("Error adding review to user")
+                return -1
+            }
         }else{
+            console.log("Error: user not found")
             return -1
         }
 
+        return review//return the added review
     }else{
         console.log(`Error: couldn't connect to the database '${mongoDBName}'`)
         return -1
@@ -196,7 +242,11 @@ async function getReviewsByMovieId(id){
         const result = await collection.find({
             movieID: parseInt(id)
         }).toArray()
-        return result[0].reviews ? result[0].reviews : -2
+        if(result[0]){
+            return result[0].reviews ? result[0].reviews : -2
+        } else {
+            return -2
+        }
     }else{
         console.log(`Error: couldn't connect to the database '${mongoDBName}'`)
         return -1

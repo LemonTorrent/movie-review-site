@@ -2,7 +2,7 @@ import { generateAuthToken, setAuthCookie } from "../../lib/auth"
 import clientPromise from "../../lib/mongo"
 const mongoDBName = process.env.MONGODB_NAME
 
-export default async (req, res) => {
+export default async function login(req, res) {
     if (req.method !== "POST") {
         res.status(405).send({ err: "Only POSTs are accepted here" })
     }

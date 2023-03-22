@@ -7,7 +7,7 @@ function useGetReviews(id) {
     const [movieInfoConst, setMovieInfoConst] = useState({})
     // const [ ratings, setRatings ] = useState([]);
     const [ officialRatings, setOfficialRatings] = useState([]);
-    var ratings;
+
     const [ loading, setLoading ] = useState(false)
     const [ error, setError ] = useState(false)
 
@@ -52,6 +52,7 @@ function useGetReviews(id) {
 
             if (!ignore) {
                 if (responseBody){
+                    // eslint-disable-next-line react-hooks/exhaustive-deps
                     movieInfoVar = responseBody
                     setMovieInfoConst(responseBody)
                 }
@@ -92,7 +93,9 @@ function useGetReviews(id) {
             }
 
             if (!ignore) {
-                setMovies([...responseBody.results] || [])
+                console.log("Getting local reviews")
+                const localReviews = await getLocalReviews();
+                setMovies([...localReviews, ...responseBody.results] || [])
                 // setLoading(false)
             }
         }
@@ -129,16 +132,15 @@ function useGetReviews(id) {
 
             if (!ignore) {
                 // setRatings(responseBody.results || [])
-                ratings = responseBody
                 // setOfficialRatings(responseBody.Ratings || [])
                 console.log("Official ratings value:", officialRatings)
                 if (responseBody.Ratings.length > 0) {
                     var tempRatings = responseBody.Ratings;
                     var tempStr = ""
                     var tempInt;
-                    tempRatings.map((obj) => {
+                    tempRatings.map((obj, i) => {
                         // tempInt = 0;
-
+                        obj.key = i
                         if (obj.Source == "Rotten Tomatoes") {
                             console.log("Rotton tomatoes!")
                             tempInt = parseInt(obj.Value.slice(0, -1))
@@ -160,6 +162,52 @@ function useGetReviews(id) {
                 // console.log("Returned ratings: ", ratings)
                 setLoading(false)
             }
+        }
+
+        async function getLocalReviews() {
+            setLoading(true)
+            let responseBody = {}
+            try {
+                const response = await fetch(
+                    `/api/reviews?id=${id}`,
+                    { signal: controller.signal }
+                )
+
+                if (response.status !== 200) {
+                    console.log("== status:", response.status)
+                    setError(true)
+                } else {
+                    responseBody = await response.json()
+                    console.log("Fetch local reviews: ", responseBody)
+                }
+            } catch (e) {
+                if (e instanceof DOMException) {
+                    console.log("HTTP request cancelled")
+                } else {
+                    setError(true)
+                    console.error("Error:", e)
+                    throw e
+                }
+            }
+
+            if (!ignore) {
+                if (responseBody.length > 0) {
+                    var tempRatings = responseBody.map((obj, i) => {
+                        if (obj.reviewer instanceof Object) {
+                            obj.reviewer = "Anonymous"
+                        }
+
+                        let returnObj = {}
+                        returnObj.id = i + "Local"
+                        returnObj.author = obj.reviewer;
+                        returnObj.content = obj.content;
+                        console.log("returnObj: ", returnObj)
+                        return returnObj
+                        });
+                    return tempRatings;
+                }
+            }
+            return [];
         }
 
 

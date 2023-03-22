@@ -8,7 +8,7 @@ const {ObjectId} = require('mongodb')
 const mongoDBName = process.env.MONGODB_NAME
 
 
-export default async function (req, res) {
+export default async function test(req, res) {
     if(req.method === "POST") {
         console.log("Got post request: ", req.body)
         const returnID = await addTestToDB(JSON.stringify(req.body))
