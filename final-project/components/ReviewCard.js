@@ -17,6 +17,8 @@ function ReviewCard ({ reviewObj }) {
         @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
         // color: grey;
         // outline: 1px solid;
+        // border-radius: 25px;
+
 
         ul {
             // margin: 0;

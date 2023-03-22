@@ -50,10 +50,7 @@ const SearchBar = styled.div`
 `
 
 const SearchResults = styled.div`
-    .query-contents {
-        height: 93%;
-        padding: 0;
-    }
+
     height: 90%;
     // color: green;
     // overflow-y: scroll;

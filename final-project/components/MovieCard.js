@@ -16,10 +16,14 @@ function MovieCard ({ movieObj }) {
         background: white;
         padding: 10px;
         margin: 10px;
+        border-radius: 5px;
+        display: flex;
+
 
         ul {
-            // margin: 0;
+            
             padding: 10px;
+            padding-top: 0;
             font: "Lucida Console", "Courier New", monospace !important;
         }
 
@@ -33,23 +37,34 @@ function MovieCard ({ movieObj }) {
 
         .title {
             font-weight: bold;
+            font-size: 20px;
         }
 
+        img {
+            height: 150px;
+        }        
         
-        
+        a {
+            margin-left: 10px;
+        }
     `
 
 
     return(
         <CardStyle id="movie-card">
-            <ul>
-                <li className="title">{movieObj.original_title}</li>
-                <li>Overview: {movieObj.overview}</li>
-                
-            </ul>
-            <Link href={"/reviews/"+movieObj.id}>
-                <button>Reviews</button>
-            </Link>
+            <img src={"https://image.tmdb.org/t/p/original" + movieObj.poster_path}/>
+
+            <div>
+                <ul>
+                    <li className="title">{movieObj.original_title}</li>
+                    <li>Overview: {movieObj.overview}</li>
+                    
+                </ul>
+                <Link href={"/reviews/"+movieObj.id}>
+                    <button>Reviews</button>
+                </Link>
+            </div>
+            
 
         </CardStyle>       
     )
