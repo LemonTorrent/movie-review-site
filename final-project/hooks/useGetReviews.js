@@ -7,7 +7,7 @@ function useGetReviews(id) {
     const [movieInfoConst, setMovieInfoConst] = useState({})
     // const [ ratings, setRatings ] = useState([]);
     const [ officialRatings, setOfficialRatings] = useState([]);
-    var ratings;
+
     const [ loading, setLoading ] = useState(false)
     const [ error, setError ] = useState(false)
 
@@ -52,6 +52,7 @@ function useGetReviews(id) {
 
             if (!ignore) {
                 if (responseBody){
+                    // eslint-disable-next-line react-hooks/exhaustive-deps
                     movieInfoVar = responseBody
                     setMovieInfoConst(responseBody)
                 }
@@ -129,16 +130,15 @@ function useGetReviews(id) {
 
             if (!ignore) {
                 // setRatings(responseBody.results || [])
-                ratings = responseBody
                 // setOfficialRatings(responseBody.Ratings || [])
                 console.log("Official ratings value:", officialRatings)
                 if (responseBody.Ratings.length > 0) {
                     var tempRatings = responseBody.Ratings;
                     var tempStr = ""
                     var tempInt;
-                    tempRatings.map((obj) => {
+                    tempRatings.map((obj, i) => {
                         // tempInt = 0;
-
+                        obj.key = i
                         if (obj.Source == "Rotten Tomatoes") {
                             console.log("Rotton tomatoes!")
                             tempInt = parseInt(obj.Value.slice(0, -1))

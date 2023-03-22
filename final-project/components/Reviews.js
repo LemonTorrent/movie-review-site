@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable @next/next/no-img-element */
 import React, { useContext, useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Spinner from '../components/Spinner'
@@ -83,7 +85,7 @@ function Reviews(props, { query }) {
                             <h2>{movieInfo.title}</h2>
                             {ratings.map(rating => {
                                     // console.log("Rating: ", rating)
-                                    return(<p>{rating.Source}: {rating.Value}</p>)
+                                    return(<p key={rating.key}>{rating.Source}: {rating.Value}</p>)
                                 })}
                         </StyledRatings>
                         

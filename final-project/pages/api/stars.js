@@ -4,7 +4,7 @@ const {ObjectId} = require('mongodb')
 const mongoDBName = process.env.MONGODB_NAME
 
 
-export default async function (req, res) {
+export default async function stars(req, res) {
     if(req.method === "GET"){
         //get the id from query string parameters
         const id = req.query.id

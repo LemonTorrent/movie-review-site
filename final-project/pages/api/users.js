@@ -9,7 +9,7 @@ export const userSchema = {
     password: {required: true}
 }
 
-export default async function (req, res) {
+export default async function user(req, res) {
     //handle post requests
     if(req.method === "POST"){
         if(validateAgainstSchema(req.body, userSchema)){

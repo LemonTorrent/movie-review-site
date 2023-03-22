@@ -42,7 +42,7 @@ export default function Navbar() {
     return (
         <NavBarDiv>
             <Link href={"/"}>
-                <h1>Benny's Movie Reviews</h1>
+                <h1>Benny&apos;s Movie Reviews</h1>
             </Link>
         </NavBarDiv>
     )

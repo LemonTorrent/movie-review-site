@@ -9,7 +9,7 @@ export const movieSchema = {
     title: {required: true}//string
 }
 
-export default async function (req, res) {
+export default async function localMovies(req, res) {
     //handle post requests
     if(req.method === "POST") {
         //checks if the reqest body matches the expected schema
