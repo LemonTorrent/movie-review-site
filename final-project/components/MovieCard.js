@@ -14,31 +14,36 @@ function MovieCard ({ movieObj }) {
         // color: grey;
         // outline: 1px solid;
         background: white;
-        font-family: 'Lato', sans-serif;
         padding: 10px;
         margin: 10px;
 
         ul {
             // margin: 0;
             padding: 10px;
+            font: "Lucida Console", "Courier New", monospace !important;
         }
 
         li {
             list-style-type: none;
+            // font-family: 'Lato', sans-serif;
             
-        }
-
-        .date {
-            font-size: 25px;
+            // font-family: "Lucida Console", "Courier New", monospace;
 
         }
+
+        .title {
+            font-weight: bold;
+        }
+
+        
+        
     `
 
 
     return(
-        <CardStyle id="weather-card">
+        <CardStyle id="movie-card">
             <ul>
-                <li>Title: {movieObj.original_title}</li>
+                <li className="title">{movieObj.original_title}</li>
                 <li>Overview: {movieObj.overview}</li>
                 
             </ul>

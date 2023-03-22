@@ -10,30 +10,31 @@ import styled from '@emotion/styled'
 const MovieHeader = styled.div `
     display: flex;
     flex-direction: row;
+    outline: dashed grey;
+    padding: 20px;
+    margin-bottom: 20px;
 
     img {
         height: 200px;
     }
-    outline: dashed grey;
-    padding: 20px;
-    margin-bottom: 20px;
+    
 `
 
 const SearchResults = styled.div`
-    .query-contents {
-        height: 93%;
-    }
+    
     height: 90%;
     // color: green;
     overflow-y: scroll;
     padding: 10px;
 
+    .query-contents {
+        height: 93%;
+    }
+
     .query-obj {
         // height: 87%;
         // overflow-y: scroll;
     }
-
-    
 
 `
 
@@ -44,6 +45,7 @@ const StyledRatings = styled.div`
     h2 {
         font-size: 40px;
         margin-bottom: 10px;
+        font-weight: normal;
     }
 `
 
