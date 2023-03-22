@@ -32,7 +32,7 @@ function Login() {
     async function handleSignup(e) {
         e.preventDefault()
         console.log("== Logging in with these credentials:", username, password)
-        const res = await fetch("/api/login", {
+        const res = await fetch("/api/users", {
             method: "POST",
             body: JSON.stringify({ username, password }),
             headers: {
@@ -44,9 +44,8 @@ function Login() {
             setError(resBody.err || "Undefined error")
         } else {
             setError(null)
-            console.log("== successful auth, token:", resBody.token)
-            console.log("== document.cookie:", document.cookie)
-            router.push(router.query.redirect || "/")
+            console.log(resBody)
+            handleLogin(e)
             
         }
     }

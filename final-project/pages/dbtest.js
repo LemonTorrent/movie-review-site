@@ -103,6 +103,9 @@ export default function DBTest() {
             <button onClick={handleGetReviews}>Get Reviews</button>
             <button onClick={handleUpdateReview}>Update Review</button>
             <button onClick={handleDelete}>Delete Review</button>
+            <button onClick={() => {
+                console.log("cookie: ", document.cookie)
+            }}>Get Cookies</button>
         </>
         
     )
