@@ -130,10 +130,10 @@ function useGetReviews(id) {
             if (!ignore) {
                 // setRatings(responseBody.results || [])
                 ratings = responseBody
-                setOfficialRatings(responseBody.Ratings || [])
+                // setOfficialRatings(responseBody.Ratings || [])
                 console.log("Official ratings value:", officialRatings)
-                if (officialRatings.length > 0) {
-                    var tempRatings = officialRatings;
+                if (responseBody.Ratings.length > 0) {
+                    var tempRatings = responseBody.Ratings;
                     var tempStr = ""
                     var tempInt;
                     tempRatings.map((obj) => {
@@ -154,6 +154,8 @@ function useGetReviews(id) {
                     })
 
                     setOfficialRatings(tempRatings)
+                } else {
+                    setOfficialRatings([])
                 }
                 // console.log("Returned ratings: ", ratings)
                 setLoading(false)
