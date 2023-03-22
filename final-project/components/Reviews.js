@@ -7,20 +7,6 @@ import ReviewCard from './ReviewCard'
 // import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 
-const searchResultStyle = styled.div `
-    .query-contents {
-        height: 93%;
-        color: green !important;
-    }
-    // height: 93%;
-    color: green;
-
-    .query-obj {
-        height: 87%;
-        overflow-y: scroll;
-    }
-`
-
 const MovieHeader = styled.div `
     display: flex;
     flex-direction: row;
