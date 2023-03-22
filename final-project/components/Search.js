@@ -140,6 +140,8 @@ function Search(props, { query }) {
                     {movies.map(movie => (
                         <MovieCard movieObj={movie} key={movie.id}/>
                     ))}
+
+                    {movies.length > 0 ? null : <h2>No movies found</h2>}
                 </div>
             )}
         
