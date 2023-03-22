@@ -32,6 +32,12 @@ export const clearAuthCookie = (res) => {
         path: "/",
         httpOnly: true
     }))
+    res.setHeader("Set-Cookie", serialize("csrf", "", {
+        path: "/"
+    }))
+    res.setHeader("Set-Cookie", serialize("username", "", {
+        path: "/"
+        }))
 }
 
 export const requireAuth = handler => (req, res) => {

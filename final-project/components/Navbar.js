@@ -2,9 +2,11 @@
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import Link from 'next/link'
+import { useState, useEffect } from 'react'
 
-import { signout } from '../lib/clientsideAuth'
+import { getUsername, signout } from '../lib/clientsideAuth'
 import useIsLoggedIn from '../hooks/useLoggedIn'
+import { useRouter } from 'next/router'
 
 const NavBarDiv = styled.div`
     // background-color: #f4cce4;
@@ -59,19 +61,23 @@ const FixedRight = styled.div`
     top: 0;
     //height: 100%;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
+    align-items: center;
 `
 
 export default function Navbar() {
-    const [isLoggedIn] = useIsLoggedIn()
+    const [isLoggedIn, username] = useIsLoggedIn()
+    const router = useRouter()
+
     return (
         <NavBarDiv>
             <Link href={"/"}>
                 <h1>Benny&apos;s Movie Reviews</h1>
             </Link>
             <FixedRight>
-            {isLoggedIn ? (<button css={buttonLink} onClick={signout}>Log out</button>) : (<Link href={"/login"} css={buttonLink}>Login</Link>)}
+                {router.route == "/login" ? null :
+                    isLoggedIn ? (<><span>{username}</span><button css={buttonLink} onClick={signout}>Log out</button></>) : (<Link href={"/login?redirect=" + router.asPath} css={buttonLink}>Login</Link>)}
             </FixedRight>
         </NavBarDiv>
     )

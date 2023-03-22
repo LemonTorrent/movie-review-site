@@ -104,7 +104,8 @@ function Reviews(props, { query }) {
                                     // console.log("Rating: ", rating)
                                     return(<p key={rating.key}>{rating.Source}: {rating.Value}</p>)
                                 })}
-                                {isLoggedIn ? <Link href={`/addReview?movieID=${router.query.movieid}`} css={buttonLink}>Add Review</Link> : <p>Log in to add review</p>}
+                                <div>&nbsp;</div>
+                                {isLoggedIn ? <Link href={`/addReview?movieID=${router.query.movieid}`} css={buttonLink}>Add Review</Link> : <p>Log in to add your review</p>}
                         </StyledRatings>
                         
                     </MovieHeader>
