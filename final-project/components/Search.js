@@ -141,7 +141,7 @@ function Search(props, { query }) {
                         <MovieCard movieObj={movie} key={movie.id}/>
                     ))}
 
-                    {movies.length > 0 ? null : <h2>No movies found</h2>}
+                    {(movies.length == 0 && router.query.query) ? <h2>No movies found</h2> : null }
                 </div>
             )}
         
