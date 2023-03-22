@@ -3,7 +3,8 @@ import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import Link from 'next/link'
 
-import { isLoggedIn, signout } from '../lib/clientsideAuth'
+import { signout } from '../lib/clientsideAuth'
+import useIsLoggedIn from '../hooks/useLoggedIn'
 
 const NavBarDiv = styled.div`
     // background-color: #f4cce4;
@@ -63,13 +64,14 @@ const FixedRight = styled.div`
 `
 
 export default function Navbar() {
+    const [isLoggedIn] = useIsLoggedIn()
     return (
         <NavBarDiv>
             <Link href={"/"}>
                 <h1>Benny's Movie Reviews</h1>
             </Link>
             <FixedRight>
-            {isLoggedIn() ? (<button css={buttonLink} onClick={signout}>Log out</button>) : (<Link href={"/login"} css={buttonLink}>Login</Link>)}
+            {isLoggedIn ? (<button css={buttonLink} onClick={signout}>Log out</button>) : (<Link href={"/login"} css={buttonLink}>Login</Link>)}
             </FixedRight>
         </NavBarDiv>
     )
