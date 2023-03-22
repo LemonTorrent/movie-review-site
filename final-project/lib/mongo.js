@@ -4,8 +4,10 @@ import { MongoClient } from "mongodb"
 const mongoUsername = process.env.MONGODB_USERNAME
 const mongoPassword = process.env.MONGODB_PASSWORD
 const mongoServer = process.env.MONGODB_SERVER ?? "moviedb.i9xkgqv.mongodb.net"
+
+let protocol = mongoServer.includes(".") ? "mongodb+srv" : "mongodb"
 //const mongoDBName = process.env.MONGODB_NAME
-const mongoUrl = `mongodb://${mongoUsername}:${mongoPassword}@${mongoServer}/?retryWrites=true&w=majority`
+const mongoUrl = `${protocol}://${mongoUsername}:${mongoPassword}@${mongoServer}/?retryWrites=true&w=majority`
 
 //console.log("mongoUrl: ", mongoUrl)
 
