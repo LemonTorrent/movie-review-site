@@ -73,10 +73,10 @@ function Search(props, { query }) {
     console.log("Search parameters: ", searchParams)
 
     // const [ inputQuery, setInputQuery ] = useState(useRouter.get("q") || "")
-    // const [ inputQuery, setInputQuery ] = useState(router.query.query || "")
-    const [ inputQuery, setInputQuery ] = useState("")
+    const [ inputQuery, setInputQuery ] = useState(router.query.query || "")
+    // const [ inputQuery, setInputQuery ] = useState("")
 
-    console.log("Input query: ", inputQuery)
+    // console.log("Input query: ", inputQuery)
 
     // const [ inputQuery, setInputQuery ] = useState(searchParams.get("q") || "")
 
@@ -88,10 +88,12 @@ function Search(props, { query }) {
     useEffect(()=>{
         if (!inputQuery) {
             setSearchParams(router.query.query)
-            setInputQuery(router.query.query)
+            // setInputQuery(router.query.query)
         }
 
-    }, [inputQuery, router.query.query])
+    // }, [inputQuery, router.query.query])
+    }, [router.query.query])
+
     
     return (
         
@@ -115,7 +117,16 @@ function Search(props, { query }) {
                         );
                         
                     }}>
-                        <input value={inputQuery} onChange={e => {setInputQuery(e.target.value)}} />
+                        <input value={inputQuery} onChange={e => {
+                            console.log("Changing input value to:", e.target.value)
+                            if (e.target.value.length == 0) {
+                                setInputQuery("")
+                            } else {
+                                setInputQuery(e.target.value)
+                            }
+
+                            console.log("Changed input value to:", inputQuery)
+                            }} />
                         <button type="submit">Search</button>
                     </form>
                 </div>
